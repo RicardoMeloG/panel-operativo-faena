@@ -23,6 +23,7 @@ void describe('validateEnvironment', () => {
       LOG_LEVEL: 'error',
       NODE_ENV: 'test',
       SWAGGER_ENABLED: false,
+      DEMO_LOGIN: false,
     });
   });
 

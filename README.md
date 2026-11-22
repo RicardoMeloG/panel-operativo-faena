@@ -16,6 +16,10 @@ La regla central es una sola: **una lectura fuera del rango de su sensor abre un
 | Estados de datos    | TanStack Query en todo el panel, distinguiendo cargando, error, vacío y contenido                 |
 | Extras              | Generador Python de lecturas, Swagger vivo, logs con `X-Request-Id`, filtros y paginación remotos |
 
+## Demo pública
+
+Hay una demo en [panel.ricardomelog.com](https://panel.ricardomelog.com): se entra como supervisor sin clave, con datos ficticios que vuelven al estado inicial cada vez que el servidor gratuito despierta. Cómo está desplegada, en [`docs/deploy-render.md`](docs/deploy-render.md).
+
 ## Requisitos
 
 - Docker Desktop con Compose.
@@ -48,18 +52,19 @@ Usuarios de demostración: `supervisor@faena.local` y `admin@faena.local`, con l
 
 Todas viven en `.env`, que no se versiona. `.env.example` trae el archivo completo con valores de desarrollo.
 
-| Variable                                              | Para qué sirve                                              | Valor de ejemplo                     |
-| ----------------------------------------------------- | ----------------------------------------------------------- | ------------------------------------ |
-| `API_PORT` · `WEB_PORT` · `POSTGRES_PORT`             | Puertos publicados en el host                               | `13000` · `8080` · `5432`            |
-| `NODE_ENV` · `LOG_LEVEL`                              | Modo de ejecución y verbosidad de los logs JSON             | `development` · `debug`              |
-| `CORS_ORIGIN`                                         | Orígenes permitidos, separados por coma                     | `http://localhost:8080`              |
-| `VITE_API_URL`                                        | URL de la API que consume el panel                          | `http://localhost:13000/api/v1`      |
-| `SWAGGER_ENABLED`                                     | Publica `/docs`                                             | `true`                               |
-| `POSTGRES_DB` · `POSTGRES_USER` · `POSTGRES_PASSWORD` | Credenciales de la base                                     | `faena` · `faena_app` · —            |
-| `DATABASE_URL`                                        | Cadena de conexión de Prisma                                | `postgresql://…/faena?schema=public` |
-| `JWT_SECRET`                                          | Firma de la sesión; mínimo 32 caracteres                    | —                                    |
-| `AUTH_COOKIE_SECURE`                                  | `true` en producción, detrás de TLS                         | `false` en local                     |
-| `SEED_ADMIN_PASSWORD` · `SEED_SUPERVISOR_PASSWORD`    | Contraseñas de los usuarios sembrados; mínimo 12 caracteres | —                                    |
+| Variable                                              | Para qué sirve                                                                                                       | Valor de ejemplo                     |
+| ----------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
+| `API_PORT` · `WEB_PORT` · `POSTGRES_PORT`             | Puertos publicados en el host                                                                                        | `13000` · `8080` · `5432`            |
+| `NODE_ENV` · `LOG_LEVEL`                              | Modo de ejecución y verbosidad de los logs JSON                                                                      | `development` · `debug`              |
+| `CORS_ORIGIN`                                         | Orígenes permitidos, separados por coma                                                                              | `http://localhost:8080`              |
+| `VITE_API_URL`                                        | URL de la API que consume el panel                                                                                   | `http://localhost:13000/api/v1`      |
+| `SWAGGER_ENABLED`                                     | Publica `/docs`                                                                                                      | `true`                               |
+| `POSTGRES_DB` · `POSTGRES_USER` · `POSTGRES_PASSWORD` | Credenciales de la base                                                                                              | `faena` · `faena_app` · —            |
+| `DATABASE_URL`                                        | Cadena de conexión de Prisma                                                                                         | `postgresql://…/faena?schema=public` |
+| `JWT_SECRET`                                          | Firma de la sesión; mínimo 32 caracteres                                                                             | —                                    |
+| `AUTH_COOKIE_SECURE`                                  | `true` en producción, detrás de TLS                                                                                  | `false` en local                     |
+| `SEED_ADMIN_PASSWORD` · `SEED_SUPERVISOR_PASSWORD`    | Contraseñas de los usuarios sembrados; mínimo 12 caracteres                                                          | —                                    |
+| `DEMO_LOGIN` · `DEMO_RESET` · `VITE_DEMO`             | Solo la demo pública: ingreso sin clave como supervisor, datos al estado inicial en cada arranque y el botón de demo | `false`                              |
 
 ## Usar la API
 

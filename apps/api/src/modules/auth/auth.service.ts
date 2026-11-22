@@ -1,7 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import argon2 from 'argon2';
+import { Role } from '../../generated/prisma/enums';
 import { PrismaService } from '../../database/prisma.service';
 import type { Environment } from '../../config/environment';
 import type { AuthenticatedUser } from './auth.types';
@@ -32,6 +33,29 @@ export class AuthService {
         code: 'INVALID_CREDENTIALS',
         message: esCL.api.invalidCredentials,
       });
+    return this.session(user);
+  }
+
+  // The public demo's sign-in: the first active supervisor, never an admin.
+  // It exists only when DEMO_LOGIN is on; otherwise the route answers 404.
+  async demoLogin(): Promise<{ token: string; user: AuthenticatedUser }> {
+    if (!this.config.get('DEMO_LOGIN', { infer: true }))
+      throw new NotFoundException({ code: 'NOT_FOUND', message: esCL.api.demoUnavailable });
+    const user = await this.prisma.user.findFirst({
+      where: { role: Role.SUPERVISOR, active: true },
+      orderBy: { email: 'asc' },
+    });
+    if (!user)
+      throw new NotFoundException({ code: 'NOT_FOUND', message: esCL.api.demoUnavailable });
+    return this.session(user);
+  }
+
+  private async session(user: {
+    id: string;
+    email: string;
+    name: string;
+    role: AuthenticatedUser['role'];
+  }): Promise<{ token: string; user: AuthenticatedUser }> {
     const sessionUser: AuthenticatedUser = {
       id: user.id,
       email: user.email,

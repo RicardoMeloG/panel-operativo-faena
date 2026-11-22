@@ -23,6 +23,9 @@ const environmentSchema = z.object({
   AUTH_COOKIE_SECURE: booleanFromString.default(false),
   LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace']).default('info'),
   SWAGGER_ENABLED: booleanFromString.default(true),
+  // Public demo: POST /auth/demo signs a visitor in as the seeded supervisor,
+  // without a password. Never on a real installation.
+  DEMO_LOGIN: booleanFromString.default(false),
 });
 
 export type Environment = z.infer<typeof environmentSchema>;

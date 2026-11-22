@@ -90,6 +90,10 @@ export const api = {
       },
       z.strictObject({ user: userResponseSchema }),
     ).then((value) => value.user),
+  demoLogin: () =>
+    request('/auth/demo', { method: 'POST' }, z.strictObject({ user: userResponseSchema })).then(
+      (value) => value.user,
+    ),
   logout: () => request('/auth/logout', { method: 'POST' }, z.void()),
   incidents: (query: Partial<IncidentListQuery> | IncidentListQuery['status'] = {}) =>
     request(

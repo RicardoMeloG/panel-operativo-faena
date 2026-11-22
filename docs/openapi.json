@@ -25,6 +25,21 @@
         "tags": ["Auth"]
       }
     },
+    "/api/v1/auth/demo": {
+      "post": {
+        "operationId": "AuthController_demo",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          },
+          "404": {
+            "description": "The public demo is off (DEMO_LOGIN=false)"
+          }
+        },
+        "tags": ["Auth"]
+      }
+    },
     "/api/v1/auth/me": {
       "get": {
         "operationId": "AuthController_me",
