@@ -25,6 +25,27 @@
         "tags": ["Auth"]
       }
     },
+    "/api/v1/auth/demo": {
+      "post": {
+        "operationId": "AuthController_demo",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          },
+          "403": {
+            "description": "Missing or mismatched CSRF token, or a foreign origin"
+          },
+          "404": {
+            "description": "The public demo is off (DEMO_LOGIN=false)"
+          },
+          "429": {
+            "description": "Too many requests"
+          }
+        },
+        "tags": ["Auth"]
+      }
+    },
     "/api/v1/auth/me": {
       "get": {
         "operationId": "AuthController_me",

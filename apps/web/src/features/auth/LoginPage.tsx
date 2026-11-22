@@ -1,8 +1,19 @@
-import { Alert, Box, Button, Card, CardContent, Stack, TextField, Typography } from '@mui/material';
+import {
+  Alert,
+  AlertTitle,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { esCL } from '@faena/contracts';
 import { api } from '../../api';
+import { clientEnvironment } from '../../config/environment';
 import { authQueryKeys } from './query-keys';
 
 export function LoginPage() {
@@ -11,6 +22,10 @@ export function LoginPage() {
   const [password, setPassword] = useState('');
   const login = useMutation({
     mutationFn: () => api.login(email, password),
+    onSuccess: (user) => client.setQueryData(authQueryKeys.me, user),
+  });
+  const demo = useMutation({
+    mutationFn: () => api.demoLogin(),
     onSuccess: (user) => client.setQueryData(authQueryKeys.me, user),
   });
   return (
@@ -36,6 +51,22 @@ export function LoginPage() {
                 {esCL.auth.loginDescription}
               </Typography>
             </Box>
+            {clientEnvironment.VITE_DEMO && (
+              <Alert severity="info">
+                <AlertTitle>{esCL.auth.demoTitle}</AlertTitle>
+                <Stack spacing={1.5}>
+                  <span>{esCL.auth.demoDescription}</span>
+                  <Button
+                    variant="contained"
+                    onClick={() => demo.mutate()}
+                    disabled={demo.isPending}
+                  >
+                    {demo.isPending ? esCL.auth.loggingIn : esCL.auth.demoLogin}
+                  </Button>
+                  {demo.isError && <span>{esCL.auth.loginFailed}</span>}
+                </Stack>
+              </Alert>
+            )}
             <TextField
               label={esCL.auth.email}
               inputProps={{ 'aria-label': esCL.auth.email }}

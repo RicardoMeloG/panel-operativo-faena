@@ -46,6 +46,19 @@ export class AuthController {
     return { user: result.user };
   }
 
+  // Public demo only (DEMO_LOGIN): the CSRF guard still applies, as on /login.
+  @Public()
+  @Post('demo')
+  async demo(@Res({ passthrough: true }) response: Response): Promise<{ user: AuthenticatedUser }> {
+    const result = await this.auth.demoLogin();
+    setSessionCookie(
+      response,
+      result.token,
+      this.config.get('AUTH_COOKIE_SECURE', { infer: true }),
+    );
+    return { user: result.user };
+  }
+
   @Get('me')
   me(@CurrentUser() user: AuthenticatedUser): { user: AuthenticatedUser } {
     return { user };

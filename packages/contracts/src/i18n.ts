@@ -20,6 +20,13 @@ export const esCL = {
     loggingIn: 'Ingresando…',
     logout: 'Salir',
     loginFailed: 'No fue posible iniciar sesión.',
+    demoTitle: 'Demo pública',
+    demoDescription:
+      'Entra como supervisor sin clave. Los datos son ficticios y vuelven a su estado inicial cada vez que la demo despierta.',
+    demoLogin: 'Entrar como supervisor de demostración',
+    waking: 'La demo está despertando',
+    wakingText:
+      'El servidor gratuito duerme cuando nadie lo usa; tarda unos 30 segundos en volver.',
   },
   navigation: {
     label: 'Navegación principal',
@@ -185,6 +192,8 @@ export const esCL = {
     originNotAllowed: 'El origen de la solicitud no está permitido.',
     invalidCsrfToken: 'El token de seguridad no es válido.',
     invalidCredentials: 'Las credenciales no son válidas.',
+    demoUnavailable: 'La demo no está disponible.',
+    demoLimit: 'La demo alcanzó su límite de órdenes; vuelve a su estado inicial al reiniciarse.',
     incidentNotFound: 'No se encontró el incidente.',
     workOrderNotFound: 'No se encontró la orden de trabajo.',
     teamNotFound: 'No se encontró el equipo.',

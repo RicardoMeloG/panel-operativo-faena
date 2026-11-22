@@ -1,4 +1,6 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException, Optional } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import type { Environment } from '../../config/environment';
 import { esCL, type Priority, type WorkOrderStatus } from '@faena/contracts';
 import { PrismaService } from '../../database/prisma.service';
 import type { Prisma } from '../../generated/prisma/client';
@@ -22,9 +24,15 @@ type WorkOrderWithRelations = Prisma.WorkOrderGetPayload<{
   include: { team: true; createdBy: true; incident: true };
 }>;
 
+// Public demo: visitors share one database, so it cannot grow without bound.
+export const DEMO_MAX_WORK_ORDERS = 200;
+
 @Injectable()
 export class WorkOrdersService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    @Optional() private readonly config?: ConfigService<Environment, true>,
+  ) {}
 
   async list(filters: WorkOrderFilters) {
     const where: Prisma.WorkOrderWhereInput = {
@@ -90,6 +98,11 @@ export class WorkOrdersService {
     input: { title: string; description?: string; priority: Priority; incidentId?: string },
     user: AuthenticatedUser,
   ) {
+    if (
+      this.config?.get('DEMO_LOGIN', { infer: true }) &&
+      (await this.prisma.workOrder.count()) >= DEMO_MAX_WORK_ORDERS
+    )
+      throw new ConflictException({ code: 'DEMO_LIMIT', message: esCL.api.demoLimit });
     if (
       input.incidentId &&
       !(await this.prisma.incident.findUnique({ where: { id: input.incidentId } }))

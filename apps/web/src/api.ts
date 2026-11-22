@@ -26,6 +26,7 @@ async function getCsrf(): Promise<string> {
   const response = await fetch(`${clientEnvironment.VITE_API_URL}/auth/csrf`, {
     credentials: 'include',
   });
+  if (!response.ok) throw new ApiError(response.status, esCL.api.requestFailed);
   const data = (await response.json()) as { token: string };
   csrfToken = data.token;
   return data.token;
@@ -90,6 +91,10 @@ export const api = {
       },
       z.strictObject({ user: userResponseSchema }),
     ).then((value) => value.user),
+  demoLogin: () =>
+    request('/auth/demo', { method: 'POST' }, z.strictObject({ user: userResponseSchema })).then(
+      (value) => value.user,
+    ),
   logout: () => request('/auth/logout', { method: 'POST' }, z.void()),
   incidents: (query: Partial<IncidentListQuery> | IncidentListQuery['status'] = {}) =>
     request(

@@ -26,6 +26,17 @@ const seedUsers = [
 ] as const;
 
 async function main(): Promise<void> {
+  // Public demo: visitors change the data, so each start brings it back to
+  // the seeded state. Children first, for the foreign keys.
+  // Both switches, so a stray DEMO_RESET alone cannot wipe a real installation.
+  if (process.env.DEMO_RESET === 'true' && process.env.DEMO_LOGIN === 'true') {
+    await prisma.$transaction([
+      prisma.workOrder.deleteMany(),
+      prisma.incident.deleteMany(),
+      prisma.reading.deleteMany(),
+    ]);
+  }
+
   const users = [];
   for (const user of seedUsers) {
     if (!user.password || user.password.length < 12) {
