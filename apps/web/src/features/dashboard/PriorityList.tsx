@@ -1,5 +1,5 @@
 import { Box, Button, Card, CardContent, Divider, Stack, Typography } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router';
 import type { IncidentResponse } from '@faena/contracts';
 import { esCL } from '@faena/contracts';
 import { SectionHeading } from '../../components/SectionHeading';

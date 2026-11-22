@@ -1,5 +1,5 @@
 import { Alert, Box, Button, Card, CardContent, Dialog, DialogContent, Stack } from '@mui/material';
-import { Link as RouterLink, useParams } from 'react-router-dom';
+import { Link as RouterLink, useParams } from 'react-router';
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { IncidentStatus } from '@faena/contracts';
