@@ -11,3 +11,13 @@ allowBuilds:
   argon2: true
   esbuild: true
   prisma: true
+
+# Patched versions of transitive production dependencies flagged by
+# `pnpm audit --prod` (CI fails on high): pulled by @prisma/config (effect,
+# source-map-js), @nestjs/swagger (js-yaml 4) and @nestjs/platform-express
+# (multer), whose own releases still pin the vulnerable ranges.
+overrides:
+  effect: ^3.22.1
+  js-yaml@^4: ^4.3.2
+  multer: ^2.5.0
+  source-map-js: ^1.2.2
