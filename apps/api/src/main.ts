@@ -12,6 +12,19 @@ async function bootstrap(): Promise<void> {
   app.enableShutdownHooks();
 
   await app.listen(config.get('API_PORT', { infer: true }), '0.0.0.0');
+
+  // Public demo: a visitor's data must not stay forever when traffic keeps
+  // the service awake. Ending the process makes the host start it again,
+  // and its start command reseeds (docs/deploy-render.md).
+  const restartHours = config.get('DEMO_RESTART_HOURS', { infer: true });
+  if (restartHours > 0) {
+    setTimeout(
+      () => {
+        void app.close().finally(() => process.exit(0));
+      },
+      restartHours * 60 * 60 * 1000,
+    ).unref();
+  }
 }
 
 bootstrap().catch((error: unknown) => {

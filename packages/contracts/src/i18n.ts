@@ -193,6 +193,7 @@ export const esCL = {
     invalidCsrfToken: 'El token de seguridad no es válido.',
     invalidCredentials: 'Las credenciales no son válidas.',
     demoUnavailable: 'La demo no está disponible.',
+    demoLimit: 'La demo alcanzó su límite de órdenes; vuelve a su estado inicial al reiniciarse.',
     incidentNotFound: 'No se encontró el incidente.',
     workOrderNotFound: 'No se encontró la orden de trabajo.',
     teamNotFound: 'No se encontró el equipo.',

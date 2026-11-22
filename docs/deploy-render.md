@@ -13,7 +13,10 @@ El sitio estático reenvía `/api/*` a la API. Para el navegador todo es un solo
 ## Modo demo
 
 - `DEMO_LOGIN=true` en la API habilita `POST /api/v1/auth/demo`. Esa ruta entra como el primer supervisor activo, nunca como administrador, y exige el token CSRF como `/auth/login`. Sin la variable responde 404.
-- `DEMO_RESET=true` hace que el seed borre órdenes, incidentes y lecturas antes de sembrar. Como el seed corre en cada arranque, los datos vuelven al estado inicial cada vez que la demo despierta.
+- `DEMO_RESET=true`, junto con `DEMO_LOGIN=true`, hace que el seed borre órdenes, incidentes y lecturas antes de sembrar. El seed corre en cada arranque del contenedor (al despertar y en cada deploy), así que los datos vuelven al estado inicial.
+- `DEMO_RESTART_HOURS=24` cierra el proceso a las 24 horas; Render lo vuelve a levantar y el seed reinicia los datos aunque el tráfico no lo deje dormir.
+- En modo demo la base admite hasta 200 órdenes de trabajo; pasado eso, crear una responde 409 hasta el próximo reinicio.
+- El límite global de pedidos (100 por minuto) se cuenta por la IP que ve la API. Detrás del proxy de Render todos los visitantes llegan con la misma IP, así que es un solo cupo compartido: protege la base gratuita, no reparte el acceso.
 - `VITE_DEMO=true` al construir el panel muestra el botón «Entrar como supervisor de demostración».
 - Las contraseñas de los usuarios sembrados las genera Render y nadie las conoce: la demo no las necesita.
 
@@ -44,6 +47,7 @@ Nunca se activan en una instalación real.
 | `SWAGGER_ENABLED`                                  | `false`                                                                                                  |
 | `LOG_LEVEL`                                        | `info`                                                                                                   |
 | `DEMO_LOGIN` · `DEMO_RESET`                        | `true`                                                                                                   |
+| `DEMO_RESTART_HOURS`                               | `24`                                                                                                     |
 
 ## Panel web (sitio estático)
 

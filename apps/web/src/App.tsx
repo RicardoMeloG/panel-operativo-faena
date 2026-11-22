@@ -1,21 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { esCL } from '@faena/contracts';
 import { useEffect, useState } from 'react';
-import { ApiError, api } from './api';
+import { api } from './api';
+import { WAKE_RETRIES, isWaking } from './wake';
 import { authQueryKeys } from './features/auth/query-keys';
 import { LoginPage } from './features/auth/LoginPage';
 import { Panel } from './features/layout/Panel';
 import { PageState } from './components/PageState';
-
-// A server that is waking up answers with a gateway error or not at all; a
-// 401 means it is awake and there is no session. Retry only the first kind,
-// for about two minutes.
-const WAKE_RETRIES = 40;
-const isWaking = (error: unknown) =>
-  !(error instanceof ApiError) ||
-  error.status === 502 ||
-  error.status === 503 ||
-  error.status === 504;
 
 function useSlow(active: boolean, afterMs = 2500): boolean {
   const [slow, setSlow] = useState(false);

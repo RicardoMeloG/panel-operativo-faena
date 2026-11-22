@@ -24,6 +24,7 @@ void describe('validateEnvironment', () => {
       NODE_ENV: 'test',
       SWAGGER_ENABLED: false,
       DEMO_LOGIN: false,
+      DEMO_RESTART_HOURS: 0,
     });
   });
 

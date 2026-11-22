@@ -26,6 +26,9 @@ const environmentSchema = z.object({
   // Public demo: POST /auth/demo signs a visitor in as the seeded supervisor,
   // without a password. Never on a real installation.
   DEMO_LOGIN: booleanFromString.default(false),
+  // Public demo: the process ends after this many hours, so the host starts
+  // it again and the seed brings the data back (0: never).
+  DEMO_RESTART_HOURS: z.coerce.number().min(0).max(168).default(0),
 });
 
 export type Environment = z.infer<typeof environmentSchema>;
