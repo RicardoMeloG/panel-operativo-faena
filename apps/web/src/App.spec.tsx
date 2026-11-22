@@ -58,8 +58,11 @@ describe('App', () => {
       </BrowserRouter>,
     );
 
-    await waitFor(() =>
-      expect(screen.getByRole('heading', { name: 'Estado de la faena' })).toBeInTheDocument(),
+    // The first test pays the cold import of the lazy dashboard; the rest of
+    // the file already waits up to five seconds.
+    await waitFor(
+      () => expect(screen.getByRole('heading', { name: 'Estado de la faena' })).toBeInTheDocument(),
+      { timeout: 5_000 },
     );
     expect(screen.getByText('Supervisión · Supervisor')).toBeInTheDocument();
     expect(screen.getByText('Uso interno · Operación de faena')).toBeInTheDocument();
