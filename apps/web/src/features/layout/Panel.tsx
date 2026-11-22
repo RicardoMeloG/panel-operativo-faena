@@ -26,7 +26,7 @@ import {
   IconWorkOrders as WorkOutlineIcon,
 } from '../../app/icons';
 import { lazy, Suspense, useState } from 'react';
-import { Link as RouterLink, Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { Link as RouterLink, Navigate, Route, Routes, useLocation } from 'react-router';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { UserResponse } from '@faena/contracts';
 import { esCL, labelRole } from '@faena/contracts';

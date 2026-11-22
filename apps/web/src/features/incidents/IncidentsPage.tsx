@@ -8,7 +8,7 @@ import type {
   MRT_SortingState,
 } from 'material-react-table';
 import { useEffect, useMemo, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { IncidentListQuery, IncidentSeverity, IncidentStatus } from '@faena/contracts';
 import { esCL, labelSeverity, labelStatus } from '@faena/contracts';

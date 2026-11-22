@@ -1,7 +1,7 @@
 import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { BrowserRouter, MemoryRouter } from 'react-router-dom';
+import { BrowserRouter, MemoryRouter } from 'react-router';
 import App from './App';
 import { AppProviders } from './app/providers';
 import { clientEnvironment } from './config/environment';
@@ -58,8 +58,11 @@ describe('App', () => {
       </BrowserRouter>,
     );
 
-    await waitFor(() =>
-      expect(screen.getByRole('heading', { name: 'Estado de la faena' })).toBeInTheDocument(),
+    // The first test pays the cold import of the lazy dashboard; the rest of
+    // the file already waits up to five seconds.
+    await waitFor(
+      () => expect(screen.getByRole('heading', { name: 'Estado de la faena' })).toBeInTheDocument(),
+      { timeout: 5_000 },
     );
     expect(screen.getByText('Supervisión · Supervisor')).toBeInTheDocument();
     expect(screen.getByText('Uso interno · Operación de faena')).toBeInTheDocument();
